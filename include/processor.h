@@ -11,8 +11,7 @@ class Processor {
 
   // TODO: Declare any necessary private members
  private:
-    float prev_stat[CPUStates::kGuestNice_]={0};
-    //float current_stat[stat_order.size()-1];   
+    float prev_stat[CPUStates::kGuestNice_]={0};   
 };
 
 #endif
