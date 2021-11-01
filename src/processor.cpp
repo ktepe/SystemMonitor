@@ -29,7 +29,6 @@ float Processor::Utilization() {
         current_stat[i] = std::stof(cpu_stat[i+1]);
     }
     
-    
     auto prev_idle = prev_stat[CPUStates::kIdle_] + prev_stat[CPUStates::kIOwait_];
     auto cur_idle = current_stat[CPUStates::kIdle_] + current_stat[CPUStates::kIOwait_];
     

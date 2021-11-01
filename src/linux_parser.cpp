@@ -82,9 +82,6 @@ float LinuxParser::MemoryUtilization() {
       std::istringstream linestream(line);
       linestream >> data1 >> data2;
       mem_[i]=std::stof(data2);
-      //ket
-      //std::cout << " linux parser mem util " << i << " " <<mem_[i] << std::endl;
-      //tek
     }
   }
   return (mem_[0]-mem_[1])/mem_[0]; 
@@ -149,7 +146,6 @@ int LinuxParser::RunningProcesses() {
 // REMOVE: [[maybe_unused]] once you define the function
 string LinuxParser::Command(int pid) { 
   string cmdline;
-
   string cmd_file = std::to_string(pid)+"/cmdline";
   std::ifstream stream(kProcDirectory + cmd_file);
   if(stream.is_open()){
@@ -157,7 +153,6 @@ string LinuxParser::Command(int pid) {
       std::istringstream linestream(cmdline);
       linestream >> cmdline;    
   }
-  
   return cmdline; 
 }
 
@@ -173,3 +168,6 @@ string LinuxParser::Uid(int pid[[maybe_unused]]) { return string(); }
 // REMOVE: [[maybe_unused]] once you define the function
 string LinuxParser::User(int pid[[maybe_unused]]) { return string(); }
 
+// TODO: Read and return the uptime of a process
+// REMOVE: [[maybe_unused]] once you define the function
+long LinuxParser::UpTime(int pid[[maybe_unused]]) { return 0; }

@@ -8,7 +8,7 @@ using std::cout;
 using std::endl;
 using LinuxParser::CPUStates;
 //tek
-#define ORG 0
+#define ORG 1
 int main() {
   
   // original
