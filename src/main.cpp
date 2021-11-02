@@ -7,6 +7,7 @@
 using std::cout;
 using std::endl;
 using LinuxParser::CPUStates;
+#include "format.h"
 //tek
 #define ORG 1
 int main() {
@@ -38,6 +39,11 @@ int main() {
   while (!pids.empty()){
     cout << "in main cpu PIDs " << pids.back() << endl;
     pids.pop_back();
+
   } 
+  
+  cout << "in main cpu PIDs uptime " << Format::ElapsedTime(LinuxParser::UpTime(1)) << endl;
+  
+
 #endif
 }
