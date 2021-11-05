@@ -21,13 +21,13 @@ class Process {
   std::string Ram();                       // TODO: See src/process.cpp
   long int UpTime();                       // TODO: See src/process.cpp
   bool operator<(Process const& a) const;  // TODO: See src/process.cpp
-  //void SetPid(int pid) {pid_ = pid;};
-
+  
   // TODO: Declare any necessary private members
  private:
     int pid_;
     std::string uname_;
-    bool unameReady; //we do not need to read pass_wordfile everytime
+    float cpu_util_;
+    //bool unameReady; //we do not need to read pass_wordfile everytime
 };
 
 #endif

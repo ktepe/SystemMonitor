@@ -46,7 +46,7 @@ int main() {
   */
   cout << "in main Uid " << LinuxParser::Uid(1) << endl;
   cout << "in main Uid " << LinuxParser::User(1) << endl;
-
+  cout << "in main running " << LinuxParser::RunningProcesses() << endl;
 
 
 #endif

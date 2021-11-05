@@ -14,7 +14,8 @@ using std::vector;
 
 Process::Process(int pid){
     pid_ = pid;
-    unameReady = false;
+    uname_ = "";
+    cpu_util_ = 0.0;
 }
 // DONE: Return this process's ID
 int Process::Pid() { return pid_; 
@@ -22,7 +23,8 @@ int Process::Pid() { return pid_;
 
 // TODO: Return this process's CPU utilization
 float Process::CpuUtilization() { 
-   return LinuxParser::CpuUtilization( pid_);
+   cpu_util_ = LinuxParser::CpuUtilization( pid_); 
+   return cpu_util_;
 }
 
 // DONE: Return the command that generated this process
@@ -37,24 +39,22 @@ string Process::Ram() {
 
 // TODO: Return the user (name) that generated this process
 string Process::User() {
- 
-    if (unameReady) {
+    // no need to run Linux parser user if we have user name
+    if (uname_ != "") {
         return uname_;
     } 
     else {
         uname_ = LinuxParser::User( pid_);
-        unameReady = true;
         return uname_;
     } 
-
- return "nanny";
 }
 
-// TODO: Return the age of this process (in seconds)
+// DONE: Return the age of this process (in seconds)
 long int Process::UpTime() { 
     return LinuxParser::UpTime(pid_); 
 }
 
-// TODO: Overload the "less than" comparison operator for Process objects
-// REMOVE: [[maybe_unused]] once you define the function
-bool Process::operator<(Process const& a[[maybe_unused]]) const { return true; }
+// DONE: [[maybe_unused]] once you define the function
+bool Process::operator<(Process const& a) const { 
+    return (cpu_util_ > a.cpu_util_);
+}
