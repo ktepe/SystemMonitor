@@ -14,13 +14,16 @@ using std::vector;
 
 Process::Process(int pid){
     pid_ = pid;
+    unameReady = false;
 }
 // DONE: Return this process's ID
 int Process::Pid() { return pid_; 
 }
 
 // TODO: Return this process's CPU utilization
-float Process::CpuUtilization() { return 0; }
+float Process::CpuUtilization() { 
+   return LinuxParser::CpuUtilization( pid_);
+}
 
 // DONE: Return the command that generated this process
 string Process::Command() { 
@@ -33,7 +36,19 @@ string Process::Ram() {
 }
 
 // TODO: Return the user (name) that generated this process
-string Process::User() { return string(); }
+string Process::User() {
+ 
+    if (unameReady) {
+        return uname_;
+    } 
+    else {
+        uname_ = LinuxParser::User( pid_);
+        unameReady = true;
+        return uname_;
+    } 
+
+ return "nanny";
+}
 
 // TODO: Return the age of this process (in seconds)
 long int Process::UpTime() { 

@@ -6,6 +6,11 @@
 Basic class for Process representation
 It contains relevant attributes as shown below
 */
+struct Uid_Uname {
+    int uid;
+    std::string uname; 
+};
+
 class Process {
  public:
   Process(int pid);
@@ -21,6 +26,8 @@ class Process {
   // TODO: Declare any necessary private members
  private:
     int pid_;
+    std::string uname_;
+    bool unameReady; //we do not need to read pass_wordfile everytime
 };
 
 #endif

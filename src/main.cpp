@@ -34,7 +34,7 @@ int main() {
   cout << "cpu_usage " << system.Cpu().Utilization() << endl; 
   // tek
   cout << "cmd line : " << LinuxParser::Command(1) << endl; 
-
+  /*
   auto pids=LinuxParser::Pids();
   while (!pids.empty()){
     cout << "in main cpu PIDs " << pids.back() << endl;
@@ -43,7 +43,11 @@ int main() {
   } 
   
   cout << "in main cpu PIDs uptime " << Format::ElapsedTime(LinuxParser::UpTime(1)) << endl;
-  
+  */
+  cout << "in main Uid " << LinuxParser::Uid(1) << endl;
+  cout << "in main Uid " << LinuxParser::User(1) << endl;
+
+
 
 #endif
 }

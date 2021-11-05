@@ -1,4 +1,6 @@
 #include <string>
+#include <vector>
+#include <sstream>
 
 #include "format.h"
 
@@ -8,7 +10,8 @@ using std::string;
 // INPUT: Long int measuring seconds
 // OUTPUT: HH:MM:SS
 // REMOVE: [[maybe_unused]] once you define the function
-string Format::ElapsedTime(long seconds[[maybe_unused]]) { 
+// Code snippets used from StackOverFlow.
+string Format::ElapsedTime(long seconds) { 
   std::string result;
 // compute h, m, s 
   std::string h = std::to_string(seconds / 3600);
@@ -21,3 +24,15 @@ string Format::ElapsedTime(long seconds[[maybe_unused]]) {
   result = hh + ':' + mm + ":" + ss;
   return result;
 }
+
+std::vector<string> Format::Split (const std::string &s, char delim) {
+    std::vector<string> result;
+    std::stringstream ss (s);
+    std::string item;
+    while (getline (ss, item, delim)) {
+        result.push_back (item);
+    }
+    return result;
+}
+
+

@@ -5,6 +5,7 @@
 #include <vector>
 //ket
 #include <iostream>
+#include "format.h"
 //tek
 
 #include "linux_parser.h"
@@ -184,18 +185,54 @@ string LinuxParser::Ram(int pid) {
 
 // TODO: Read and return the user ID associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Uid(int pid[[maybe_unused]]) { return string(); }
+string LinuxParser::Uid(int pid) { 
+  string line, key, tmp, value;
+  string status_file = std::to_string(pid)+"/status";
+  std::ifstream stream(kProcDirectory + status_file);
+  if(stream.is_open()){
+      while(std::getline(stream, line)){
+        std::istringstream linestream(line);
+        while (linestream >> key >> tmp){
+          //std::cout<< "Uid key "<< key  << " value "<< value  <<std::endl;
+          if (key == "Uid:") {          
+            //std::cout<< "Uid key "<< key  << " tmp value "<< tmp <<std::endl;
+            value = tmp;
+          }
+        }
+      }
+    }
+  return value; 
+}
 
 // TODO: Read and return the user associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::User(int pid[[maybe_unused]]) { return string(); }
+string LinuxParser::User(int pid) {
+  string line;
+  string user;
+  //auto uid = std::stoi(LinuxParser::Uid(pid));
+  auto uid = LinuxParser::Uid(pid);
+  std::ifstream stream(kPasswordPath);
+  if(stream.is_open()){
+      while(std::getline(stream, line)){
+        auto v = Format::Split(line, ':');
+        if (v[2] == uid){
+          user = v[0];
+          //std::cout<< "User "<< v[0] << " uid " << uid << " v[2] " << v[2] <<std::endl;
+        }
+        
+      }
+  }
+
+  return user; //"nana";
+}
 
 // TODO: Read and return the uptime of a process
 // 22 value in the /proc/pid/stat file
 long LinuxParser::UpTime(int pid) { 
+
   string stat_line;
-  string cmd_file = std::to_string(pid)+"/stat";
-  std::ifstream stream(kProcDirectory + cmd_file);
+  string stat_file = std::to_string(pid)+"/stat";
+  std::ifstream stream(kProcDirectory + stat_file);
   if(stream.is_open()){
       std::getline(stream, stat_line);
       std::istringstream linestream(stat_line);
@@ -204,4 +241,27 @@ long LinuxParser::UpTime(int pid) {
   }
   return std::stol(stat_line)/sysconf(_SC_CLK_TCK); 
   
+}
+
+//Added.
+float LinuxParser::CpuUtilization(int pid) {  
+  string line;
+  char delimitter {' '};
+  float utime, stime, cutime, cstime, starttime; 
+  string stat_file = std::to_string(pid)+"/stat";
+  std::ifstream stream(kProcDirectory + stat_file);
+  if(stream.is_open()){
+      std::getline(stream, line);
+      auto v=Format::Split(line, delimitter);
+      utime = std::stof(v[13]);
+      stime = std::stof(v[14]);
+      cutime = std::stof(v[15]);
+      cstime = std::stof(v[16]);
+      starttime = std::stof(v[21]);
+  }
+  float total_time = (utime + stime + cutime + cstime) /sysconf(_SC_CLK_TCK) ;
+  float seconds = LinuxParser::UpTime() - starttime/sysconf(_SC_CLK_TCK);
+
+
+  return 100*total_time/seconds; 
 }
