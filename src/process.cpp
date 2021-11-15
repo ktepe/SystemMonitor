@@ -32,12 +32,12 @@ string Process::Command() {
     return LinuxParser::Command( pid_ ); 
 }
 
-// TODO: Return this process's memory utilization
+// DONE: Return this process's memory utilization
 string Process::Ram() { 
     return LinuxParser::Ram( pid_); 
 }
 
-// TODO: Return the user (name) that generated this process
+// DONE: Return the user (name) that generated this process
 string Process::User() {
     // no need to run Linux parser user if we have user name
     if (uname_ != "") {
@@ -56,5 +56,5 @@ long int Process::UpTime() {
 
 // DONE: [[maybe_unused]] once you define the function
 bool Process::operator<(Process const& a) const { 
-    return (cpu_util_ > a.cpu_util_);
+    return (cpu_util_ < a.cpu_util_);
 }
