@@ -10,12 +10,8 @@
 
 #include "linux_parser.h"
 
-//using std::stof;
 using std::string;
-//using std::to_string;
 using std::vector;
-
-//using namespace std;
 
 // OS An example of how to read data from the filesystem
 string LinuxParser::OperatingSystem() {
@@ -175,7 +171,12 @@ string LinuxParser::Command(int pid) {
       std::istringstream linestream(cmdline);
       linestream >> cmdline;    
   }
-  stream.close();	
+  stream.close();
+  // if cmdline is longer than 50 char reduce to 40
+  if (cmdline.length() > 50){ 
+    cmdline.resize(40);
+  	cmdline.append("...");
+   }
   return cmdline; 
 }
 
@@ -183,11 +184,11 @@ string LinuxParser::Command(int pid) {
 string LinuxParser::Ram(int pid) { 
   string key, value;
   string status_file;
-  
+  int memsize = 0; //initialize to 0;  
+ 
   status_file = std::to_string(pid)+"/status";
   std::ifstream stream(kProcDirectory + status_file);
 
-  int memsize = 1000;  
   
   if(stream.is_open()){
       while(std::getline(stream, status_file)){
@@ -238,8 +239,7 @@ string LinuxParser::User(int pid) {
         auto v = Format::Split(line, ':');
         if (v[2] == uid){
           user = v[0];
-        }
-        
+        }        
       }
   }
   stream.close();
