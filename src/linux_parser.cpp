@@ -10,10 +10,12 @@
 
 #include "linux_parser.h"
 
-using std::stof;
+//using std::stof;
 using std::string;
-using std::to_string;
+//using std::to_string;
 using std::vector;
+
+//using namespace std;
 
 // OS An example of how to read data from the filesystem
 string LinuxParser::OperatingSystem() {
@@ -35,6 +37,7 @@ string LinuxParser::OperatingSystem() {
       }
     }
   }
+  filestream.close();
   return value;
 }
 
@@ -48,6 +51,7 @@ string LinuxParser::Kernel() {
     std::istringstream linestream(line);
     linestream >> os >> version >> kernel;
   }
+  stream.close(); //suggested by reviewer
   return kernel;
 }
 
@@ -85,6 +89,7 @@ float LinuxParser::MemoryUtilization() {
       mem_[i]=std::stof(data2);
     }
   }
+  stream.close(); 
   return (mem_[0]-mem_[1])/mem_[0]; 
  }
 
@@ -96,7 +101,8 @@ long LinuxParser::UpTime() {
   if (stream.is_open()) {
     std::getline(stream, line);
     std::istringstream linestream(line);
-    linestream >> secs; 
+    linestream >> secs;
+    stream.close();
     return std::stol(secs);
   }
   else {
@@ -109,7 +115,7 @@ long LinuxParser::Jiffies() { return 0; }
 
 // TODO: Read and return the number of active jiffies for a PID
 // REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
+//long LinuxParser::ActiveJiffies(int pid) { return 0; }
 
 // TODO: Read and return the number of active jiffies for the system
 long LinuxParser::ActiveJiffies() { return 0; }
@@ -130,6 +136,7 @@ vector<string> LinuxParser::CpuUtilization() {
         cpu_usage.emplace_back(line);
       }
   }
+  stream.close();
   return cpu_usage; 
 }
 
@@ -154,10 +161,10 @@ int LinuxParser::RunningProcesses() {
         }
       }
   }
+  stream.close();
   return no_of_running;
 }
 
-// TODO: Read and return the command associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
 string LinuxParser::Command(int pid) { 
   string cmdline;
@@ -168,12 +175,11 @@ string LinuxParser::Command(int pid) {
       std::istringstream linestream(cmdline);
       linestream >> cmdline;    
   }
-
+  stream.close();	
   return cmdline; 
 }
 
-// TODO: Read and return the memory used by a process
-// REMOVE: [[maybe_unused]] once you define the function
+// DONE: Read and return the memory used by a process
 string LinuxParser::Ram(int pid) { 
   string key, value;
   string status_file;
@@ -193,8 +199,8 @@ string LinuxParser::Ram(int pid) {
         }
       }
   }
-
-  return std::to_string(memsize/1000000)+" MB";
+  stream.close();	
+  return std::to_string(memsize/1000);
 }
 
 // TODO: Read and return the user ID associated with a process
@@ -231,7 +237,6 @@ string LinuxParser::User(int pid) {
         auto v = Format::Split(line, ':');
         if (v[2] == uid){
           user = v[0];
-          //std::cout<< "User "<< v[0] << " uid " << uid << " v[2] " << v[2] <<std::endl;
         }
         
       }
@@ -277,5 +282,5 @@ float LinuxParser::CpuUtilization(int pid) {
   float seconds = LinuxParser::UpTime() - starttime/sysconf(_SC_CLK_TCK);
 
 
-  return 100*total_time/seconds; 
+  return total_time/seconds; 
 }
