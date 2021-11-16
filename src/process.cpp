@@ -12,6 +12,7 @@ using std::string;
 using std::to_string;
 using std::vector;
 
+// Constructor 
 Process::Process(int pid){
     pid_ = pid;
     uname_ = "";
@@ -21,7 +22,7 @@ Process::Process(int pid){
 int Process::Pid() { return pid_; 
 }
 
-// TODO: Return this process's CPU utilization
+// DONE: Return this process's CPU utilization
 float Process::CpuUtilization() { 
    cpu_util_ = LinuxParser::CpuUtilization( pid_); 
    return cpu_util_;
@@ -51,7 +52,7 @@ string Process::User() {
 
 // DONE: Return the age of this process (in seconds)
 long int Process::UpTime() { 
-    return LinuxParser::UpTime(pid_); 
+    return LinuxParser::UpTime()-LinuxParser::UpTime(pid_); 
 }
 
 // DONE: [[maybe_unused]] once you define the function

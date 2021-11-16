@@ -141,7 +141,7 @@ int LinuxParser::TotalProcesses() {
   return LinuxParser::Pids().size();
 }
 
-// TODO: Read and return the number of running processes
+// DONE: Read and return the number of running processes
 int LinuxParser::RunningProcesses() { 
   int no_of_running = 0;
   string key, value;
@@ -161,7 +161,7 @@ int LinuxParser::RunningProcesses() {
   return no_of_running;
 }
 
-// REMOVE: [[maybe_unused]] once you define the function
+// DONE: 
 string LinuxParser::Command(int pid) { 
   string cmdline;
   string cmd_file = std::to_string(pid)+"/cmdline";
@@ -207,8 +207,7 @@ string LinuxParser::Ram(int pid) {
   return std::to_string(memsize/1000);
 }
 
-// TODO: Read and return the user ID associated with a process
-// REMOVE: [[maybe_unused]] once you define the function
+// DONE: Read and return the user ID associated with a process
 string LinuxParser::Uid(int pid) { 
   string line, key, tmp, value;
   string status_file = std::to_string(pid)+"/status";
@@ -263,7 +262,7 @@ long LinuxParser::UpTime(int pid) {
   return std::stol(stat_line)/sysconf(_SC_CLK_TCK);   
 }
 
-//Added.
+//Added to obtain cpu utilization of a process
 float LinuxParser::CpuUtilization(int pid) {  
   string line;
   char delimitter {' '};
